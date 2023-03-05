@@ -6,8 +6,8 @@ class Player(pygame.sprite.Sprite):
         self.game = game
         self.lifes = 3
         self.max_lifes = 3
-        self.velocity = 2
-        self.max_velocity = 7
+        self.velocity = 5
+        self.max_velocity = 15
         self.image = pygame.image.load('assets/player.png')
         self.image = pygame.transform.scale(self.image, (120,120))
         self.rect = self.image.get_rect()
@@ -31,21 +31,21 @@ class Player(pygame.sprite.Sprite):
 
     def move_left(self):
         self.rect.x -= self.velocity
-        # self.image = pygame.image.load('assets/player.png')
-        # self.image = pygame.transform.scale(self.image, (120,120))
 
     def move_right(self):
         self.rect.x += self.velocity
-        # self.image = pygame.image.load('assets/player_r.png')
-        # self.image = pygame.transform.scale(self.image, (120,120))
 
     def dec_heart(self):
+        self.game.sound_manager.play('bad_bonus')
         self.lifes -= 1
         if self.lifes == 0:
             self.game.game_over()
+            self.game.sound_manager.play('game_over')
     
     def inc_heart(self):
+        self.game.sound_manager.play('good_bonus')
         self.lifes += 1
+
 
     def inc_speed(self):
         self.velocity += 1

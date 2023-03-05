@@ -1,25 +1,26 @@
 import pygame
 from models.Game import Game
-import math
-pygame.init()        
+pygame.init()    
+pygame.mixer.init()    
         
+clock = pygame.time.Clock()
+FPS = 120
 
 pygame.display.set_caption("Techno Fall")
 screen = pygame.display.set_mode((550,650))
 
-background = pygame.image.load("assets/bg.png")
+background = pygame.image.load('assets/bg.png')
 
-banner = pygame.image.load('assets/banner.png')
-banner = pygame.transform.scale(banner, (350, 300))
-banner_rect = banner.get_rect()
-banner_rect.x = 100
-banner_rect.y = 100
+ground = pygame.image.load('assets/ground.jpg')
+ground = pygame.transform.scale(ground, (550,250))
+ground_rect = ground.get_rect()
+ground_rect.y = 600
 
 play_button = pygame.image.load('assets/button.png')
-play_button = pygame.transform.scale(play_button, (250,90))
+play_button = pygame.transform.scale(play_button, (240,130))
 play_button_rect = play_button.get_rect()
 play_button_rect.x = 155
-play_button_rect.y = 320
+play_button_rect.y = 250
 
 game = Game()
 
@@ -28,12 +29,11 @@ run = True
 while run :
 
     screen.blit(background, (-600, -150))
-
     if game.runing:
+        screen.blit(ground, ground_rect)
         game.update_game(screen)
     else : 
         screen.blit(play_button, play_button_rect)
-        screen.blit(banner, banner_rect)
 
     pygame.display.flip()
 
@@ -42,8 +42,8 @@ while run :
             run = False
             pygame.quit()
 
-        elif event.type == pygame.KEYDOWN:
-            game.pressed[event.key] = True 
+        elif event.type == pygame.KEYDOWN: 
+            game.pressed[event.key] = True
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
@@ -51,3 +51,6 @@ while run :
         if event.type == pygame.MOUSEBUTTONDOWN:
             if play_button_rect.collidepoint(event.pos):
                 game.runing = True
+                game.sound_manager.play('click')
+            
+    clock.tick(FPS)

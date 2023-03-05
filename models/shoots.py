@@ -7,7 +7,7 @@ class shoots(pygame.sprite.Sprite):
         super().__init__()
         self.game = game
         self.velocity = 1
-        self.max_velocity = 10
+        self.max_velocity = 20
         self.time = 10
         self.min_time = 2
         self.image = pygame.image.load(image)
@@ -26,12 +26,17 @@ class shoots(pygame.sprite.Sprite):
             self.rect.y += self.velocity
         else : 
             self.remove()
+            self.game.sound_manager.play("bonus")
             self.game.player.score_inc(100)
 
-        if self.rect.y > 650:
+        if self.rect.y > 570:
             self.remove()
             if not self.type == "heart" and not self.type == "virus":
                 self.game.player.dec_heart()
+
+    def speedup(self):  
+        if self.velocity  > self.max_velocity :
+            self.velocity += 1
 
 
 

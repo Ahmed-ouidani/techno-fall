@@ -6,6 +6,7 @@ from models.shoots import laptop
 from models.shoots import heart
 from models.shoots import virus
 from models.event import event
+from models.sounds import soundman
 import random
 
 class Game:
@@ -18,6 +19,7 @@ class Game:
         self.pressed = {}
         self.all_shoots = pygame.sprite.Group()
         self.event = event(self)
+        self.sound_manager = soundman()
 
     def game_over(self):
         self.all_players = pygame.sprite.Group()
@@ -71,10 +73,16 @@ class Game:
 
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x < 450:
             self.player.move_right()
+            self.player.image = pygame.image.load('assets/player_r.png')
+            self.player.image = pygame.transform.scale(self.player.image, (120,120))
+
         elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x > -20:
             self.player.move_left()
+            self.player.image = pygame.image.load('assets/player.png')
+            self.player.image = pygame.transform.scale(self.player.image, (120,120))
 
     def speed_up(self):
-        if (self.player.score % 5000) == 0 :
+        if (self.player.score % 2000) == 0 :
             self.event.inc_speed()
+            self.all_shoots.speedup()
         
